@@ -5,13 +5,9 @@ import gzip
 from multiprocessing import Pool
 import os
 
-from matplotlib.collections import LineCollection
-from matplotlib import gridspec
-from matplotlib import pyplot as plt
 import numpy as np
 import pandas as pd
 import requests
-from scipy.signal import butter, sosfilt
 
 
 # pylint:disable=too-many-locals,too-many-statements
@@ -242,6 +238,9 @@ def get_channel_names_or_ids(metadata):
 
 # pylint:disable=too-many-locals
 def plot_eeg(x, y=None, pred=None, squeeze=5.0, scaling_factor=None):
+    from matplotlib.collections import LineCollection
+    from matplotlib import gridspec
+    from matplotlib import pyplot as plt
     if not isinstance(x, np.ndarray):
         x = np.asarray(x)
 
@@ -293,36 +292,6 @@ def plot_eeg(x, y=None, pred=None, squeeze=5.0, scaling_factor=None):
 
     plt.tight_layout()
     return plt
-
-
-def butter_bandstop(lowcut, highcut, fs, order=5):
-    nyq = 0.5 * fs
-    low = lowcut / nyq
-    high = highcut / nyq
-    sos = butter(order, [low, high], analog=False,
-                 btype='bandstop', output='sos')
-    return sos
-
-
-def butter_bandstop_filter(data, lowcut, highcut, fs, order=5):
-    sos = butter_bandstop(lowcut, highcut, fs, order=order)
-    y = sosfilt(sos, data)
-    return y
-
-
-def butter_bandpass(lowcut, highcut, fs, order=5):
-    nyq = 0.5 * fs
-    low = lowcut / nyq
-    high = highcut / nyq
-    sos = butter(order, [low, high], analog=False,
-                 btype='bandpass', output='sos')
-    return sos
-
-
-def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
-    sos = butter_bandpass(lowcut, highcut, fs, order=order)
-    y = sosfilt(sos, data)
-    return y
 
 
 def get_diary_fitbit_data(data_url):

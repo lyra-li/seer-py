@@ -21,10 +21,8 @@ setup(
     install_requires=[
         'gql',
         'requests',
-        'matplotlib',
         'numpy',
         'pandas',
-        'scipy'
     ],
     tests_require=[
         'pytest'
