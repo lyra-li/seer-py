@@ -371,8 +371,10 @@ class SeerConnect:  # pylint: disable=too-many-public-methods
         if isinstance(labels, pd.DataFrame):
             labels = labels.to_dict('records')
         query_string = graphql.get_add_labels_mutation_string()
-        return self.execute_query(query_string,
-                                  variable_values={"groupId": group_id, "labels": labels})
+        return self.execute_query(query_string, variable_values={
+            "groupId": group_id,
+            "labels": labels
+        })
 
     def add_document(self, study_id, document_name, document_path):
         """
@@ -1238,7 +1240,8 @@ class SeerConnect:  # pylint: disable=too-many-public-methods
             'timezone', and 'endTime'.
         """
         if is_active is not None:
-            filter_string = f'(filters: [{{name: "isActive", value: "{"true" if is_active else "false"}"}}])'
+            is_active_string = "true" if is_active else "false"
+            filter_string = f'(filters: [{{name: "isActive", value: "{is_active_string}"}}])'
         else:
             filter_string = ''
         query_string = graphql.get_diary_medication_alert_windows_query_string(
